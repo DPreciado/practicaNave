@@ -18,7 +18,8 @@ float angulo = 0.0f;
 //declarar una ventana
 GLFWwindow* window;
 double tiempoActual, tiempoAnterior;
-double velocidadTriangulo = 0.7;
+double velocidadTriangulo = 0.8;
+
 
 void dibujarTriangulo() {
 	glPushMatrix();
@@ -74,7 +75,10 @@ void dibujarTriangulo() {
 	glPopMatrix();
 }
 
-float posXTriangulo = 0.0f, posYTriangulo = 0.0f, anguloNave = 0.0f;
+float posXTriangulo = 0.0f;
+float posYTriangulo = 0.0f;
+float anguloNave = 0.0f;
+float velocidadGiro = 900;
 
 void teclado_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS || action == GLFW_REPEAT && key ==GLFW_KEY_RIGHT) {
@@ -100,21 +104,19 @@ void actualizar() {
 	double tiempoDiferencial = tiempoActual - tiempoAnterior;
 	int estadoDerecha = glfwGetKey(window, GLFW_KEY_RIGHT);
 	if (estadoDerecha == GLFW_PRESS) {
-		anguloNave += - 0.1;
+		anguloNave -= velocidadGiro*tiempoDiferencial;
 	}
 
 	int estadoArriba = glfwGetKey(window, GLFW_KEY_UP);
 	if (estadoArriba == GLFW_PRESS) {
-		float auxY = sin(anguloNave * 3.1416 / 180);
-		float auxX = cos(anguloNave * 3.1416 / 180);
 		
-		posYTriangulo += auxY*0.0001;
-		posXTriangulo += auxX*0.0001;
+		posYTriangulo += sin((anguloNave + 90.0) * 3.141592 / 180.0) * (velocidadTriangulo * tiempoDiferencial);
+		posXTriangulo += cos((anguloNave + 90.0) * 3.141592 / 180.0) * (velocidadTriangulo * tiempoDiferencial);
 	}
 
 	int estadoIzquierda = glfwGetKey(window, GLFW_KEY_LEFT);
 	if (estadoIzquierda == GLFW_PRESS) {
-		anguloNave += 0.1;
+		anguloNave += velocidadGiro*tiempoDiferencial;
 	}
 
 	/*int estadoAbajo = glfwGetKey(window, GLFW_KEY_DOWN);
@@ -130,6 +132,7 @@ void dibujar() {
 
 	glTranslatef(posXTriangulo, posYTriangulo, 0.0f);
 	glRotatef(anguloNave, 0.0f, 0.0f, 1.0f);
+	glScalef(0.4f, 0.7f, 0.7f);
 
 	glBegin(GL_TRIANGLES);
 	glColor3f(0.2, 0.6, 0.1);
