@@ -78,7 +78,7 @@ void dibujarTriangulo() {
 float posXTriangulo = 0.0f;
 float posYTriangulo = 0.0f;
 float anguloNave = 0.0f;
-float velocidadGiro = 900;
+float velocidadGiro = 700;
 
 void teclado_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS || action == GLFW_REPEAT && key ==GLFW_KEY_RIGHT) {
@@ -119,6 +119,20 @@ void actualizar() {
 		anguloNave += velocidadGiro*tiempoDiferencial;
 	}
 
+	if (posXTriangulo < -1.01) {
+		posXTriangulo *= -1;
+	}else if (posXTriangulo > 1.01) {
+		posXTriangulo *= -1;
+	}
+
+	if (posYTriangulo < -1.01) {
+		posYTriangulo *= -1;
+	}else if (posYTriangulo > 1.01) {
+		posYTriangulo *= -1;
+	}
+
+
+
 	/*int estadoAbajo = glfwGetKey(window, GLFW_KEY_DOWN);
 	if (estadoAbajo == GLFW_PRESS) {
 		posYTriangulo -= velocidadTriangulo * tiempoDiferencial;
@@ -158,6 +172,8 @@ int main()
 	//Si se pudo inicial glfw
 	//inicializamos la ventana
 	window = glfwCreateWindow(600, 600, "Ventana", NULL, NULL);
+
+
 
 	if (!window)
 	{
